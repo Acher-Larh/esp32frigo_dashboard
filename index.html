@@ -102,26 +102,26 @@
                 // Fetch LDR Data
                 const dataResponse = await fetch(`${API_BASE_URL}/ldr-data/?limit=50`);
                 const ldrData = await dataResponse.json();
-
+        
                 // Fetch Calculations
                 const calculationsResponse = await fetch(`${API_BASE_URL}/calculations/`);
                 const calculations = await calculationsResponse.json();
-
+        
                 // Fetch Alerts
                 const alertsResponse = await fetch(`${API_BASE_URL}/alerts/`);
                 const alerts = await alertsResponse.json();
-
+        
                 // Update Chart
-                lightLevelChart.data.labels = ldrData.map((_, index) => `Reading ${index + 1}`);
-                lightLevelChart.data.datasets[0].data = ldrData.map(item => item.value);
+                lightLevelChart.data.labels = ldrData.map(item => new Date(item.timestamp).toLocaleString()); // Formatting timestamps for readability
+                lightLevelChart.data.datasets[0].data = ldrData.map(item => item.value); // Use 'value' field for graph data
                 lightLevelChart.update();
-
+        
                 // Update Stats
                 document.getElementById('totalReadings').textContent = ldrData.length;
                 document.getElementById('currentLightLevel').textContent = 
                     ldrData.length > 0 ? ldrData[ldrData.length - 1].value : '-';
                 document.getElementById('alertCount').textContent = alerts.length;
-
+        
                 // Update Alerts Table
                 const alertsTableBody = document.getElementById('alertsTableBody');
                 alertsTableBody.innerHTML = ''; // Clear existing rows
@@ -132,7 +132,7 @@
                     row.insertCell(2).textContent = alert.min_value;
                     row.insertCell(3).textContent = alert.avg_value.toFixed(2);
                 });
-
+        
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
