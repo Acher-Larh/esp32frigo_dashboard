@@ -100,7 +100,7 @@
         async function updateDashboard() {
             try {
                 // Fetch LDR Data
-                const dataResponse = await fetch(`${API_BASE_URL}/ldr-data?limit=50`);
+                const dataResponse = await fetch(`${API_BASE_URL}/ldr-data/?limit=50`);
                 const ldrData = await dataResponse.json();
 
                 // Fetch Calculations
